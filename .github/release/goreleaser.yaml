@@ -9,7 +9,10 @@ before:
 
 builds:
   - id: protoc-gen-openapi
-    binary: protoc-gen-openapi
+    # Installed as `protoc-gen-openapi-solo` to avoid colliding with the
+    # `protoc-gen-openapi` binary that the `gnostic` cask in this same tap owns.
+    # Use it with protoc via `--plugin=protoc-gen-openapi=$(which protoc-gen-openapi-solo)`.
+    binary: protoc-gen-openapi-solo
     main: ./
     env:
       - CGO_ENABLED=0
@@ -77,11 +80,10 @@ homebrew_casks:
   # tap; the installed binary is still `protoc-gen-openapi` so `protoc` can infer
   # the plugin from the `openapi_out` flag.
   - name: protoc-gen-openapi-solo
-    # The archive ships a binary literally named `protoc-gen-openapi` (so protoc
-    # can infer the plugin). Without this, GoReleaser defaults the cask's binary
-    # stanza to the cask name (`protoc-gen-openapi-solo`), which isn't in the
-    # archive, so `brew install` fails. (Replaces the deprecated `binary:` field.)
-    binaries: [protoc-gen-openapi]
+    # The archive ships a binary named `protoc-gen-openapi-solo`; declare it
+    # explicitly so the generated `binary` stanza matches the archive contents.
+    # (Replaces the deprecated `binary:` field.)
+    binaries: [protoc-gen-openapi-solo]
     repository:
       owner: the-protobuf-project
       name: homebrew-tap
@@ -98,7 +100,7 @@ homebrew_casks:
       post:
         install: |
           if OS.mac?
-            system_command "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "#{staged_path}/protoc-gen-openapi"]
+            system_command "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "#{staged_path}/protoc-gen-openapi-solo"]
           end
 
 release:
