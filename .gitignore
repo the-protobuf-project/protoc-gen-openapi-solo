@@ -26,3 +26,6 @@ _output/
 protoc-gen-openapi
 out/
 _output/
+
+# GoReleaser build output
+dist/
