@@ -82,7 +82,7 @@ homebrew_casks:
       name: homebrew-tap
       token: '{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}'
     directory: Casks
-    homepage: 'https://github.com/the-protobuf-project/protoc-gen-openapi'
+    homepage: 'https://github.com/the-protobuf-project/protoc-gen-openapi-solo'
     description: 'protoc plugin that generates OpenAPI v3 specs from protobuf definitions'
     license: "Apache-2.0"
     ids:
@@ -99,7 +99,9 @@ homebrew_casks:
 release:
   github:
     owner: the-protobuf-project
-    name: protoc-gen-openapi
+    # Must match the repo's CURRENT name. It was renamed to `-solo`, and the old
+    # name 307-redirects — which breaks asset uploads to uploads.github.com.
+    name: protoc-gen-openapi-solo
   # Delete and re-upload assets that already exist on the release, so re-running
   # a release on the same tag (e.g. after a partial/failed run) is idempotent
   # instead of failing with GitHub's 422 "already_exists" error.
